@@ -31,14 +31,26 @@ class ViewController: UIViewController
         }
         
         switch operation {
-        case "×": // mult
-            if operandStack.count >= 2 {
-                displayValue = operandStack.removeLast() * operandStack.removeLast()
-            }
-//        case "÷": // divi
-//        case "+": // plus
-//        case "−": // minu
+        case "×": performOperation {$0 * $1} // multi
+        case "÷": performOperation {$1 / $0} // divi
+        case "+": performOperation {$0 + $1} // plus
+        case "−": performOperation {$1 - $0} // minu
+        case "√": performOperationOne {sqrt($0)}
         default: break
+        }
+    }
+    
+    func performOperation(operation: (Double, Double) -> Double) {
+        if operandStack.count >= 2 {
+            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
+            enter()
+        }
+    }
+    
+    func performOperationOne(operation: Double -> Double) {
+        if operandStack.count >= 1 {
+            displayValue = operation(operandStack.removeLast())
+            enter()
         }
     }
     
